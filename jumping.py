@@ -1,18 +1,35 @@
-def elements_in_even_positions(c):
-    return [number for i, number in enumerate(c) if i % 2 == 0]
+class Path:
+    def __init__(self, path):
+        self._path = path[::-1]
+        self._actual_position = 0
+        self._last_position = len(self._path) - 1
+
+    def can_do_n_steps(self, n):
+        next_position = self._actual_position + n
+        return next_position <= self._last_position and self._path[next_position] == 0
+
+    def do_n_steps(self, n):
+        self._actual_position = self._actual_position + n
+        return
+
+    def am_i_in_last_position(self):
+        return self._actual_position == self._last_position
 
 
 def jumpingOnClouds(c):
-    elements = len(c)
-    if elements % 2 == 0:
-        return elements / 2
-    else:
-        positions = elements_in_even_positions(c)
-        print positions
-        if 1 in positions:
-            return elements // 2
-        else:
-            return elements // 2 + 1
+    path = Path(c)
+    jump = 0
+
+    while not path.am_i_in_last_position():
+
+        for n in [2, 1]:
+            if path.can_do_n_steps(n):
+                path.do_n_steps(n)
+                jump = jump + 1
+                break
+
+    return jump
 
 
 print jumpingOnClouds([0, 0, 1, 0, 0, 1, 0])
+print jumpingOnClouds([0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0])
